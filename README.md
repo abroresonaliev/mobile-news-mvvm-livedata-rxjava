@@ -1,4 +1,4 @@
-it's a sample project, in project used: kotlin coroutines, dagger2, cicerone, mvvm
+it's a sample project, in project used: RxJava2, dagger2, cicerone, mvvm
 
 articles taken from https://newsapi.org/
 
