@@ -17,7 +17,7 @@ import uz.icebegsoft.mobilenews.presentation.presentation.home.features.dashboar
 import uz.icebegsoft.mobilenews.presentation.support.controller.StateEmptyItemController
 import uz.icebegsoft.mobilenews.presentation.support.controller.StateErrorItemController
 import uz.icebegsoft.mobilenews.presentation.support.controller.StateLoadingItemController
-import uz.icebegsoft.mobilenews.presentation.utils.LoadingState.*
+import uz.icebegsoft.mobilenews.presentation.support.event.LoadingListEvent.*
 import uz.icebegsoft.mobilenews.presentation.utils.addCallback
 import uz.icebegsoft.mobilenews.presentation.utils.onBackPressedDispatcher
 import java.util.*
@@ -59,7 +59,7 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
         super.onCreate(savedInstanceState)
         onBackPressedDispatcher.addCallback(this) { requireActivity().finish() }
 
-        observeArticleList()
+        observeLiveData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,6 +72,9 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
             breakingArticleRv.itemAnimator = null
             topArticleRv.adapter = topArticlesAdapter
             topArticleRv.itemAnimator = null
+            settingsIv.setOnClickListener {
+                viewModel.openSettingsScreen()
+            }
         }
         if (savedInstanceState == null) {
             with(viewModel) {
@@ -87,15 +90,15 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
         super.onDestroy()
     }
 
-    private fun observeArticleList() {
+    private fun observeLiveData() {
         with(viewModel) {
             breakingArticlesLiveData.observe(this@DashboardArticlesFragment) { state ->
                 val itemList = ItemList.create()
                 when (state) {
-                    is SuccessItem -> itemList.addAll(state.data, breakingArticleController)
-                    is EmptyItem -> itemList.add(breakingEmptyController)
-                    is ErrorItem -> itemList.add(breakingErrorController)
-                    is LoadingItem -> itemList.add(breakingLoadingController)
+                    is LoadingState -> itemList.add(breakingLoadingController)
+                    is SuccessState -> itemList.addAll(state.data, breakingArticleController)
+                    is EmptyState -> itemList.add(breakingEmptyController)
+                    is ErrorState -> itemList.add(breakingErrorController)
                 }
                 breakingArticlesAdapter.setItems(itemList)
             }
@@ -103,10 +106,10 @@ internal class DashboardArticlesFragment : Fragment(R.layout.fragment_dashboard_
             topArticlesLiveData.observe(this@DashboardArticlesFragment) { state ->
                 val itemList = ItemList.create()
                 when (state) {
-                    is SuccessItem -> itemList.addAll(state.data, topArticleController)
-                    is EmptyItem -> itemList.add(topEmptyController)
-                    is ErrorItem -> itemList.add(topErrorController)
-                    is LoadingItem -> itemList.add(topLoadingController)
+                    is LoadingState -> itemList.add(topLoadingController)
+                    is SuccessState -> itemList.addAll(state.data, topArticleController)
+                    is EmptyState -> itemList.add(topEmptyController)
+                    is ErrorState -> itemList.add(topErrorController)
                 }
                 topArticlesAdapter.setItems(itemList)
             }

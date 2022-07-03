@@ -4,22 +4,15 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import uz.icebegsoft.mobilenews.presentation.application.Application
-import uz.icebegsoft.mobilenews.presentation.application.di.data.DataDaggerModuleDataSource
-import uz.icebegsoft.mobilenews.presentation.application.di.data.DataDaggerModuleRepository
-import uz.icebegsoft.mobilenews.presentation.application.di.domain.DomainDaggerModuleUseCase
 import uz.icebegsoft.mobilenews.presentation.application.di.domain.DomainUseCaseProvider
+import uz.icebegsoft.mobilenews.presentation.application.manager.daynight.DayNightModeManager
 import javax.inject.Singleton
 
 @Singleton
-@Component(
-    modules = [
-        ApplicationDaggerModule::class,
-        DataDaggerModuleDataSource::class,
-        DataDaggerModuleRepository::class,
-        DomainDaggerModuleUseCase::class
-    ]
-)
+@Component(modules = [ApplicationDaggerModule::class])
 internal interface ApplicationDaggerComponent : DomainUseCaseProvider {
+
+    val dayNightModeManager: DayNightModeManager
 
     fun inject(application: Application)
 

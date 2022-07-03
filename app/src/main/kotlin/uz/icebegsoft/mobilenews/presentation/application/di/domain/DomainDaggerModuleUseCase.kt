@@ -14,6 +14,8 @@ import uz.icebegsoft.mobilenews.domain.usecase.article.recommended.RecommendedAr
 import uz.icebegsoft.mobilenews.domain.usecase.article.recommended.RecommendedArticlesUseCaseImpl
 import uz.icebegsoft.mobilenews.domain.usecase.bookmark.BookmarkUseCase
 import uz.icebegsoft.mobilenews.domain.usecase.bookmark.BookmarkUseCaseImpl
+import uz.icebegsoft.mobilenews.domain.usecase.daynight.DayNightModeUseCase
+import uz.icebegsoft.mobilenews.domain.usecase.daynight.DayNightModeUseCaseImpl
 import javax.inject.Singleton
 
 @Module(
@@ -36,6 +38,11 @@ internal object DomainDaggerModuleUseCase {
         fun bindDashboardArticleListUseCase(
             impl: DashboardArticlesUseCaseImpl
         ): DashboardArticlesUseCase
+
+        @Binds
+        fun bindDayNightModeUseCase(
+            impl: DayNightModeUseCaseImpl
+        ): DayNightModeUseCase
 
         @Binds
         fun bindReadLaterArticleListUseCase(

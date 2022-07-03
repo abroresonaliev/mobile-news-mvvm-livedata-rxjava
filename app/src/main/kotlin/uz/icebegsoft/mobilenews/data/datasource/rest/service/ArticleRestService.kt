@@ -9,19 +9,19 @@ internal interface ArticleRestService {
 
     @GET("${API_TOP_HEADINGS}${API_API_KEY}")
     fun getBreakingArticles(
-        @Query(FIELD_COUNTRY) country: String = "us"
+        @Query(FIELD_SORT) sortBy: String = "popularity"
     ): Observable<ArticleListResponse>
 
     @GET("${API_TOP_HEADINGS}${API_API_KEY}")
     fun getTopArticles(
-        @Query(FIELD_COUNTRY) country: String = "ru",
+        @Query(FIELD_COUNTRY) country: String = "us",
+        @Query(FIELD_CATEGORY) category: String = "business",
         @Query(FIELD_SORT) sortBy: String = "popularity"
     ): Observable<ArticleListResponse>
 
     @GET("${API_TOP_HEADINGS}${API_API_KEY}")
     fun getRecommendedArticles(
-        @Query(FIELD_CATEGORY) category: String = "sport",
-        @Query(FIELD_COUNTRY) country: String = "us",
+        @Query(FIELD_CATEGORY) category: String = "science",
         @Query(FIELD_SORT) sortBy: String = "popularity"
     ): Observable<ArticleListResponse>
 

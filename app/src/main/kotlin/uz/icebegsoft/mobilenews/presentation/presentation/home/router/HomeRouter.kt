@@ -6,9 +6,9 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 import uz.icebegsoft.mobilenews.presentation.presentation.home.features.dashboard.DashboardArticlesFragment
 import uz.icebegsoft.mobilenews.presentation.presentation.home.features.readlater.ReadLaterArticlesFragment
 import uz.icebegsoft.mobilenews.presentation.presentation.home.features.recommended.RecommendedArticlesFragment
-import uz.icebegsoft.mobilenews.presentation.support.cicerone.FeatureRouter
+import uz.icebegsoft.mobilenews.presentation.support.cicerone.router.BaseFeatureRouter
 
-class HomeRouter : FeatureRouter() {
+class HomeRouter : BaseFeatureRouter() {
 
     private var bottomNavigationRouter: Router? = null
     private var navigationListener: ((tab: HomeTab) -> Unit)? = null

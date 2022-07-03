@@ -21,8 +21,7 @@ class ArticleDetailViewModel @Inject constructor(
     }
 
     private val _articleDetailLiveData = MutableLiveData<ArticleDetailLoadingState>()
-    val articleDetailLiveData: LiveData<ArticleDetailLoadingState>
-        get() = _articleDetailLiveData
+    val articleDetailLiveData: LiveData<ArticleDetailLoadingState> = _articleDetailLiveData
 
 
     fun getArticleDetail() {

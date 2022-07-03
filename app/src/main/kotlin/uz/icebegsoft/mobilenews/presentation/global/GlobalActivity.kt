@@ -3,6 +3,7 @@ package uz.icebegsoft.mobilenews.presentation.global
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
@@ -11,6 +12,7 @@ import uz.icerbersoft.mobilenews.databinding.ActivityGlobalBinding
 import uz.icebegsoft.mobilenews.presentation.application.Application
 import uz.icebegsoft.mobilenews.presentation.global.di.GlobalDaggerComponent
 import uz.icebegsoft.mobilenews.presentation.global.router.GlobalRouter
+import uz.icebegsoft.mobilenews.presentation.application.manager.daynight.DayNightModeManager
 import javax.inject.Inject
 
 internal class GlobalActivity : AppCompatActivity() {
@@ -24,6 +26,9 @@ internal class GlobalActivity : AppCompatActivity() {
     private val navigatorHolder: NavigatorHolder by lazy { cicerone.navigatorHolder }
     private val navigator by lazy { SupportAppNavigator(this, binding.frameLayout.id) }
 
+    @Inject
+    lateinit var dayNightModeManager: DayNightModeManager
+
     private val binding by lazy { ActivityGlobalBinding.inflate(layoutInflater) }
 
     lateinit var globalDaggerComponent: GlobalDaggerComponent
@@ -36,8 +41,15 @@ internal class GlobalActivity : AppCompatActivity() {
             .inject(this)
 
         super.onCreate(savedInstanceState)
+
+        AppCompatDelegate.setDefaultNightMode(dayNightModeManager.getDayNightMode())
         setContentView(binding.root)
         viewModel.onActivityCreate()
+    }
+
+    fun updateNightMode (dayNightMode: Int){
+        dayNightModeManager.setDayNightMode(dayNightMode)
+        AppCompatDelegate.setDefaultNightMode(dayNightModeManager.getDayNightMode())
     }
 
     override fun onResumeFragments() {

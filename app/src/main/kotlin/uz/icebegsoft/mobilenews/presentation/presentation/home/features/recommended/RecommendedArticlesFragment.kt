@@ -15,7 +15,7 @@ import uz.icebegsoft.mobilenews.presentation.presentation.home.features.recommen
 import uz.icebegsoft.mobilenews.presentation.support.controller.StateEmptyItemController
 import uz.icebegsoft.mobilenews.presentation.support.controller.StateErrorItemController
 import uz.icebegsoft.mobilenews.presentation.support.controller.StateLoadingItemController
-import uz.icebegsoft.mobilenews.presentation.utils.LoadingState.*
+import uz.icebegsoft.mobilenews.presentation.support.event.LoadingListEvent.*
 import uz.icebegsoft.mobilenews.presentation.utils.addCallback
 import uz.icebegsoft.mobilenews.presentation.utils.onBackPressedDispatcher
 import javax.inject.Inject
@@ -35,7 +35,7 @@ internal class RecommendedArticlesFragment : Fragment(R.layout.fragment_recommen
 
         super.onCreate(savedInstanceState)
         onBackPressedDispatcher.addCallback(this) { viewModel.back() }
-        observeArticleList()
+        observeLiveData()
     }
 
     private val easyAdapter = EasyAdapter()
@@ -67,14 +67,14 @@ internal class RecommendedArticlesFragment : Fragment(R.layout.fragment_recommen
         super.onDestroy()
     }
 
-    private fun observeArticleList() {
+    private fun observeLiveData() {
         viewModel.articlesLiveData.observe(this) { state ->
             val itemList = ItemList.create()
             when (state) {
-                is SuccessItem -> itemList.addAll(state.data, articleController)
-                is EmptyItem -> itemList.add(stateEmptyItemController)
-                is ErrorItem -> itemList.add(stateErrorController)
-                is LoadingItem -> itemList.add(stateLoadingController)
+                is LoadingState -> itemList.add(stateLoadingController)
+                is SuccessState -> itemList.addAll(state.data, articleController)
+                is EmptyState -> itemList.add(stateEmptyItemController)
+                is ErrorState -> itemList.add(stateErrorController)
             }
             easyAdapter.setItems(itemList)
         }

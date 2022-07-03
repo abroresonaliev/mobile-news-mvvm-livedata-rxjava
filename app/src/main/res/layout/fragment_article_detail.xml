@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_background">
+    android:background="@color/background_color">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_white"
+            android:background="@color/card_background_color"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
@@ -37,7 +37,7 @@
                         style="@style/Theme.MobileNews.SimpleDraweeView.DefaultNewsListImage"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_220sdp"
-                        android:tint="@color/color_transparent"
+                        android:tint="@color/black_transparent_49"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -54,7 +54,7 @@
                         android:src="@drawable/ic_back"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/color_white" />
+                        app:tint="@color/white" />
 
                     <ImageView
                         android:id="@+id/bookmark_iv"
@@ -67,7 +67,7 @@
                         android:src="@drawable/ic_bookmark"
                         app:layout_constraintEnd_toStartOf="@id/share_iv"
                         app:layout_constraintTop_toTopOf="@id/detail_image_sdv"
-                        app:tint="@color/color_white" />
+                        app:tint="@color/white" />
 
                     <ImageView
                         android:id="@+id/share_iv"
@@ -80,7 +80,7 @@
                         android:src="@drawable/ic_share"
                         app:layout_constraintEnd_toEndOf="@id/detail_image_sdv"
                         app:layout_constraintTop_toTopOf="@id/detail_image_sdv"
-                        app:tint="@color/color_white" />
+                        app:tint="@color/white" />
 
                     <TextView
                         android:id="@+id/source_text_view"
@@ -90,7 +90,7 @@
                         android:layout_marginTop="8dp"
                         android:ellipsize="end"
                         android:maxLines="3"
-                        android:textColor="@color/color_black"
+                        android:textColor="@color/app_text_color_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +120,7 @@
                         android:layout_marginTop="8dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:textColor="@color/color_secondary_text_color"
+                        android:textColor="@color/app_text_color_secondary"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/title_text_view"

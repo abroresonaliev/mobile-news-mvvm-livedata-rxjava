@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import uz.icebegsoft.mobilenews.domain.data.entity.article.Article
 import uz.icebegsoft.mobilenews.domain.usecase.article.dashboard.DashboardArticlesUseCase
 import uz.icebegsoft.mobilenews.presentation.global.router.GlobalRouter
+import uz.icebegsoft.mobilenews.presentation.support.event.LoadingListEvent
+import uz.icebegsoft.mobilenews.presentation.support.event.LoadingListEvent.*
 import uz.icebegsoft.mobilenews.presentation.support.moxy.BaseViewModel
-import uz.icebegsoft.mobilenews.presentation.utils.LoadingState
-import uz.icebegsoft.mobilenews.presentation.utils.LoadingState.*
 import javax.inject.Inject
 
 internal class DashboardArticlesViewModel @Inject constructor(
@@ -15,22 +15,23 @@ internal class DashboardArticlesViewModel @Inject constructor(
     private val router: GlobalRouter
 ) : BaseViewModel() {
 
-    private val _breakingArticlesLiveData = MutableLiveData<LoadingState<List<Article>>>()
-    val breakingArticlesLiveData: LiveData<LoadingState<List<Article>>> = _breakingArticlesLiveData
+    private val _breakingArticlesLiveData = MutableLiveData<LoadingListEvent<Article>>()
+    val breakingArticlesLiveData: LiveData<LoadingListEvent<Article>> = _breakingArticlesLiveData
 
-    private val _topArticlesLiveData = MutableLiveData<LoadingState<List<Article>>>()
-    val topArticlesLiveData: LiveData<LoadingState<List<Article>>> = _topArticlesLiveData
+    private val _topArticlesLiveData = MutableLiveData<LoadingListEvent<Article>>()
+    val topArticlesLiveData: LiveData<LoadingListEvent<Article>> = _topArticlesLiveData
 
     fun getBreakingArticles() {
         val disposable = useCase.getBreakingArticles()
-            .doOnSubscribe { _breakingArticlesLiveData.value = LoadingItem }
+            .doOnSubscribe { _breakingArticlesLiveData.value = LoadingState }
             .subscribe(
                 {
-                    _breakingArticlesLiveData.value =
-                        if (it.articles.isNotEmpty()) SuccessItem(it.articles)
-                        else EmptyItem
+                    _breakingArticlesLiveData.postValue(
+                        if (it.articles.isNotEmpty()) SuccessState(it.articles)
+                        else EmptyState
+                    )
                 },
-                { _breakingArticlesLiveData.value = ErrorItem }
+                { _breakingArticlesLiveData.postValue(ErrorState(it.message)) }
             )
 
         compositeDisposable.add(disposable)
@@ -38,14 +39,15 @@ internal class DashboardArticlesViewModel @Inject constructor(
 
     fun getTopArticles() {
         val disposable = useCase.getTopArticles()
-            .doOnSubscribe { _topArticlesLiveData.value = LoadingItem }
+            .doOnSubscribe { _topArticlesLiveData.postValue(LoadingState) }
             .subscribe(
                 {
-                    _topArticlesLiveData.value =
-                        if (it.articles.isNotEmpty()) SuccessItem(it.articles)
-                        else EmptyItem
+                    _topArticlesLiveData.postValue(
+                        if (it.articles.isNotEmpty()) SuccessState(it.articles)
+                        else EmptyState
+                    )
                 },
-                { _topArticlesLiveData.value = ErrorItem }
+                { _topArticlesLiveData.postValue(ErrorState(it.message)) }
             )
 
         compositeDisposable.add(disposable)
@@ -60,4 +62,8 @@ internal class DashboardArticlesViewModel @Inject constructor(
 
     fun openArticleDetailScreen(article: Article) =
         router.openArticleDetailScreen(article.articleId)
+
+    fun openSettingsScreen() {
+        router.openSettingsScreen()
+    }
 }
