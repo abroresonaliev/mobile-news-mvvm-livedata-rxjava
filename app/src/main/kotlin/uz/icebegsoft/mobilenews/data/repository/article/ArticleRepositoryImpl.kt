@@ -28,8 +28,8 @@ internal class ArticleRepositoryImpl @Inject constructor(
                 }
             }
             .map { it -> it.articles.map { it.url } }
-            .doOnError {
-                if (it is ConnectException) Observable.just(listOf<String>())
+            .onErrorResumeNext { it: Throwable ->
+                if (it is ConnectException) Observable.just(listOf())
                 else throw it
             }
             .flatMap { postUrls ->
@@ -51,8 +51,8 @@ internal class ArticleRepositoryImpl @Inject constructor(
                 }
             }
             .map { it -> it.articles.map { it.url } }
-            .doOnError {
-                if (it is ConnectException) Observable.just(listOf<String>())
+            .onErrorResumeNext { it: Throwable ->
+                if (it is ConnectException) Observable.just(listOf())
                 else throw it
             }
             .flatMap { postUrls ->
@@ -74,8 +74,8 @@ internal class ArticleRepositoryImpl @Inject constructor(
                 }
             }
             .map { it -> it.articles.map { it.url } }
-            .doOnError {
-                if (it is ConnectException) Observable.just(listOf<String>())
+            .onErrorResumeNext { it: Throwable ->
+                if (it is ConnectException) Observable.just(listOf())
                 else throw it
             }
             .flatMap { postUrls ->
@@ -97,8 +97,8 @@ internal class ArticleRepositoryImpl @Inject constructor(
                 }
             }
             .map { it -> it.articles.map { it.url } }
-            .doOnError {
-                if (it is ConnectException) Observable.just(listOf<String>())
+            .onErrorResumeNext { it: Throwable ->
+                if (it is ConnectException) Observable.just(listOf())
                 else throw it
             }
             .flatMap { postUrls ->
