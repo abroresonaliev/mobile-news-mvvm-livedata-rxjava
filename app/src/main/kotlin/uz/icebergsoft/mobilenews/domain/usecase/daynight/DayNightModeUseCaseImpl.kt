@@ -1,8 +1,6 @@
 package uz.icebergsoft.mobilenews.domain.usecase.daynight
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.map
+import io.reactivex.Observable
 import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightModeWrapper
 import uz.icebergsoft.mobilenews.domain.data.repository.settings.SettingsRepository
 import uz.icebergsoft.mobilenews.presentation.utils.convertToDayNightMode
@@ -12,9 +10,9 @@ class DayNightModeUseCaseImpl @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : DayNightModeUseCase {
 
-    override fun getDayNightModWrappers(): Flow<List<DayNightModeWrapper>> {
+    override fun getDayNightModWrappers(): Observable<List<DayNightModeWrapper>> {
         return settingsRepository.getSelectedDayNightMode()
-            .flatMapConcat { dayNightMode ->
+            .flatMap { dayNightMode ->
                 settingsRepository.getDayNightModes()
                     .map { it -> it.map { DayNightModeWrapper(it, it == dayNightMode) } }
             }

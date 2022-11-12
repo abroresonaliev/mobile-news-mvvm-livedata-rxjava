@@ -63,6 +63,12 @@ internal class SettingsFragment : Fragment(R.layout.fragment_settings) {
         viewModel.getAvailableSettings()
     }
 
+    override fun onDestroy() {
+        viewModel.clearViewModel()
+
+        super.onDestroy()
+    }
+
     private fun observeLiveData() {
         viewModel.dayNightModesLiveData.observe(this) { event ->
             val itemList = ItemList.create()

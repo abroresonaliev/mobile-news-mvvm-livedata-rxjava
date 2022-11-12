@@ -2,11 +2,6 @@ package uz.icebergsoft.mobilenews.presentation.presentation.setttings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import uz.icebergsoft.mobilenews.domain.data.entity.settings.DayNightModeWrapper
 import uz.icebergsoft.mobilenews.domain.usecase.daynight.DayNightModeUseCase
 import uz.icebergsoft.mobilenews.presentation.presentation.setttings.router.SettingsRouter
@@ -27,21 +22,26 @@ class SettingsViewModel @Inject constructor(
     val dayNightModesLiveData: LiveData<LoadingListEvent<DayNightModeWrapper>> =
         _dayNightModesLiveData
 
-     fun getAvailableSettings() {
-        useCase.getDayNightModWrappers()
-            .onStart { _dayNightModesLiveData.postValue(LoadingState) }
-            .onEach {
-                dayNightModeWrappers.clear()
-                dayNightModeWrappers.addAll(it)
+    fun getAvailableSettings() {
+        val disposable = useCase.getDayNightModWrappers()
+            .doOnSubscribe { _dayNightModesLiveData.postValue(LoadingState) }
+            .subscribe(
+                {
+                    dayNightModeWrappers.clear()
+                    dayNightModeWrappers.addAll(it)
 
-                if (it.isNotEmpty()) {
-                    _dayNightModesLiveData.postValue(SuccessState(it))
-                } else {
-                    _dayNightModesLiveData.postValue(EmptyState)
+                    if (it.isNotEmpty()) {
+                        _dayNightModesLiveData.postValue(SuccessState(it))
+                    } else {
+                        _dayNightModesLiveData.postValue(EmptyState)
+                    }
+                },
+                {
+                    _dayNightModesLiveData.postValue(ErrorState(it.localizedMessage))
                 }
-            }
-            .catch { _dayNightModesLiveData.postValue(ErrorState(it.localizedMessage)) }
-            .launchIn(viewModelScope)
+            )
+
+        compositeDisposable.add(disposable)
     }
 
     fun saveDayNightMode(dayNightModeWrapper: DayNightModeWrapper) {
