@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MVVM RxJava</string>
+    <string name="app_name">mvvm-ld-rx-java</string>
 
     <string name="title_bottom_dashboard">Today</string>
     <string name="title_bottom_recommended">For you</string>

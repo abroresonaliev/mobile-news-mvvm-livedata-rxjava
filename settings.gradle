@@ -1,2 +1,2 @@
-rootProject.name = "mobile-news-mvvm-rxjava"
+rootProject.name = "mobile-news-mvvm-livedata-rxjava"
 include ':app'
